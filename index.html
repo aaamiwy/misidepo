@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Bangunan Misi Depo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', Monsterrat;
+            line-height: 1.6;
+            color: #ffffff;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #8b0916;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #8b0916;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* User Info & Logout */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #333;
+        }
+
+        .user-welcome {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px; 
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        #beranda {
+            position: relative;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            min-height: 100vh;
+            max-height: 100vh; /* Membatasi tinggi hero section */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+                
+        .video-background { 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+             z-index: -2;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Overlay gelap transparan */
+            z-index: -1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 20px;
+            margin-top: 8vh; 
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem; 
+            animation: fadeInUp 1s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem; 
+            animation: fadeInUp 1s ease 0.2s both;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #500808;
+            color: rgb(254, 249, 249);
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button:hover {
+            background: #000000;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Info Section */
+        #info {
+            background: linear-gradient(135deg, #000000 0%, #6b0d0d 50%, #e22727 100%);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 6rem;
+            margin-top: 3rem;
+        }
+
+        .info-card {
+            background: rgb(77, 6, 6);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .info-card i {
+            font-size: 3rem;
+            color: #fb3939;
+            margin-bottom: 1rem;
+        }
+
+        /* Gallery Section */
+        #galeri {
+            background: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay h3 {
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        /* Contact Section */
+        #kontak {
+            background: linear-gradient(135deg, #000000 0%, #5f020b 100%);
+            color: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1rem;
+            color: #ecf0f1;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: #f75b5b;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: #ec435c;
+            transform: translateY(-3px);
+        }
+
+        .contact-form {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ecf0f1;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.9);
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #e93e3e;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-bottom: 3rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 60px 5%;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            /* Responsive untuk user info */
+            .user-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#beranda" class="logo">
+                <img src= "foto logo.jpg" alt= "Misi Depo Bangunan" style="height: 60px; vertical-align: middle;">
+                <span style="margin-left: 0px;">Misi Depo Bangunan</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#beranda">Beranda</a></li>
+                <li><a href="#info">Info</a></li>
+                <li><a href="#galeri">Produk</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+            </ul>
+            <!-- User info dan logout button -->
+            <div class="user-info">
+                <span class="user-welcome">Selamat datang, <strong id="username"></strong></span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
+                </button>
+            </div>
+            <div class="mobile-menu" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Beranda Section -->
+    <section id="beranda"> 
+        <video class="video-background" autoplay muted loop> 
+        <source src="video web.mp4" type="video/mp4"> 
+        <source src="path/to/your/video.webm" type="video/webm"> Maaf, browser Anda tidak mendukung video. 
+        </video> <div class="video-overlay"></div> 
+        <div class="hero-content"> 
+        <h1>Selamat Datang di Supermarket Bahan Bangunan</h1> 
+        <p>Menyediakan kebutuhan membangun dan merenovasi rumah mulai dari bahan bangunan hingga perabotan rumah tangga</p> 
+        <a href="#galeri" class="cta-button">Lihat Produk Kami</a> 
+    </div> 
+    </section>
+
+    <!-- Info Section -->
+    <section id="info">
+        <h2 class="section-title">Tentang Kami</h2>
+        <p class="section-subtitle">Mengapa memilih produk dari kami?</p>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <i class="fas fa-medal"></i>
+                <h3>Kualitas Terjamin</h3>
+                <p>Semua produk telah melalui kontrol kualitas yang ketat untuk memastikan standar terbaik bagi pelanggan kami.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-shipping-fast"></i>
+                <h3>Pengiriman Cepat</h3>
+                <p>Layanan pengiriman yang cepat dan terpercaya ke seluruh Indonesia dengan kemasan yang aman.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-tag"></i>
+                <h3>Harga Kompetitif</h3>
+                <p>Menawarkan harga yang kompetitif tanpa mengurangi kualitas produk yang kami jual.</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-headset"></i>
+                <h3>Layanan 24/7</h3>
+                <p>Tim customer service yang siap membantu Anda kapan saja untuk konsultasi dan pemesanan.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeri Produk Section -->
+    <section id="galeri">
+        <h2 class="section-title">Produk Kami</h2>
+        <p class="section-subtitle">Koleksi lengkap bahan berkualitas tinggi</p>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="foto 1.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Semen Berkualitas untuk Konstruksi Tangguh!
+Tersedia berbagai jenis merk semen </h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 2.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Bata Merah Press – Solusi Kuat & Estetik untuk Bangunan Anda!
+Tersedia grosir & eceran – Siap kirim langsung ke lokasi Anda</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 3.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Jual Pasir Bangunan Berkualitas Tinggi!
+Kuatkan pondasi bangunan Anda dengan pasir terbaik dari kami!</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 4.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Tersedia besi beton ulir dan polos berkualitas tinggi, siap pakai untuk cor, kolom, dan sloof bangunan.</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 5.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Kami menyediakan gergaji, sekop, cangkul, bor listrik, dan berbagai alat pertukangan dari brand terpercaya seperti Bosch, Makita, dan Krisbow.
+Kualitas terjamin untuk hasil kerja maksimal!</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 6.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Genteng Berkualitas, Lindungi Rumah Anda dengan Gaya & Kekuatan!
+Tersedia berbagai jenis genteng, semua lengkap dalam satu tempat!</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 7.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Temukan berbagai ventilasi dan hiasan dinding beton berkualitas tinggi dengan desain beragam, dari klasik hingga modern, untuk mempercantik rumah Anda sekaligus memperlancar sirkulasi udara.</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 8.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Penuhi kebutuhan finishing bangunan Anda dengan berbagai pilihan cat berkualitas!
+Tersedia produk dari merek ternama</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 9.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Hadirkan suasana baru di ruangan Anda dengan wallpaper dinding berkualitas tinggi – pilihan motif lengkap, dari minimalis hingga klasik mewah.</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 10.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Lengkapi ruangan Anda dengan koleksi keramik dan granit berkualitas tinggi yang tersedia dalam berbagai pilihan motif, ukuran, dan warna.</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 11.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Kami menyediakan berbagai jenis pintu untuk kebutuhan bangunan Anda, seperti pintu kayu solid, pintu panel, pintu aluminium, pintu PVC, dan pintu besi.</h3>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="foto 12.jpg" >
+                <div class="gallery-overlay">
+                    <h3>Toko kami juga  menyediakan berbagai jenis furniture untuk menambah estetika rumah anda</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontak Section -->
+    <section id="kontak">
+        <h2 class="section-title" style="color: white;">Hubungi Kami</h2>
+        <p class="section-subtitle" style="color: #bdc3c7;">Mari berkolaborasi untuk kebutuhan bahan Anda</p>
+        
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Informasi Kontak</h3>
+                
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <strong>Alamat:</strong><br>
+                        Jl. Tun Abdul Razak, Paccinongang, Kec. Somba Opu, Kabupaten Gowa, Sulawesi Selatan 90235
+<br>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <strong>Telepon:</strong><br>
+                        (0411)8221355
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <strong>Email:</strong><br>
+                        mdbbangunanhertasninga@gmail.com
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <strong>Jam Operasional:</strong><br>
+                        Setiap Hari: 08.00 - 21.00 <br>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://www.instagram.com/misidepobangunan?igsh=MXVmZ2cwaDFqc3JjaA==" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/+6282344521880" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.facebook.com/mdbhertasning" title="Facebook">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="http://www.tiktok.com/@misidepomakassar?fbclid=PAZXh0bgNhZW0CMTEAAacn85Xv2aOfd-R0VlVRv4G-c72JEpm0k9gRWM2EUf6MRYPXXMjSHnXCbc-kOA_aem_jKqoxFLoKmo4oQMcrS4enQ" title="Tiktok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="http://www.youtube.com/@depobangunanofficial" title="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+
+            </div>
+            <div class="contact-form">
+                <h3>Kirim Pesan</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" id="nama" name="nama" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telepon">Nomor Telepon</label>
+                        <input type="tel" id="telepon" name="telepon">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pesan">Pesan</label>
+                        <textarea id="pesan" name="pesan" placeholder="Tulis pesan Anda di sini..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Kirim Pesan</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Check authentication on page load 
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+        });
+
+        function checkAuthentication() {
+            const session = localStorage.getItem('misi_depo_session');
+            
+            if (!session) {
+                // No session found, redirect to login
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const sessionData = JSON.parse(session);
+                const loginTime = new Date(sessionData.loginTime);
+                const now = new Date();
+                const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+
+                // Check if session is still valid (24 hours)
+                if (hoursDiff >= 24) {
+                    localStorage.removeItem('misi_depo_session');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                // Update username in header
+                document.getElementById('username').textContent = sessionData.username;
+                
+            } catch (error) {
+                // Invalid session data
+                localStorage.removeItem('misi_depo_session');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin keluar?')) {
+                localStorage.removeItem('misi_depo_session');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form Submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Terima kasih! Pesan Anda telah dikirim. Kami akan segera menghubungi Anda.');
+            this.reset();
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
